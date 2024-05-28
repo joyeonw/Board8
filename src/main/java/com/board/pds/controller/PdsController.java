@@ -1,7 +1,6 @@
 package com.board.pds.controller;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -168,29 +167,47 @@ public class PdsController {
 	}
 	
 	// 자료실 글 수정
-	// http://localhost:9090/Pds/UpdateForm?bno=1010&menu_id=MENU01&nowpage=1
+	// http://localhost:9090/Pds/UpdateForm?bno=1017&menu_id=MENU01&nowpage=1
 	@RequestMapping("/UpdateForm")
-	public ModelAndView updateForm(
-			@RequestParam HashMap<String, Object> map			
-			) {
+	public  ModelAndView  updateForm(
+		@RequestParam  HashMap<String, Object> map ) {
 		
 		// 메뉴 목록
-		List<MenuVo> menuList = menuMapper.getMenuList();
+		List<MenuVo>  menuList  =  menuMapper.getMenuList();
 		
-		// 조회할 게시글 정보
-		PdsVo          pdsVo  =  pdsService.getPds( map );
+		// 수정할 게시글 조회
+		PdsVo         pdsVo     =  pdsService.getPds(map);
 		
-		// 수정할 파일들 정보
-		List<FilesVo> fileList = pdsService.getFileList( map );
+		// 수정할 파일들 정보(fileList)
+		List<FilesVo> fileList  =  pdsService.getFileList(map); 
 		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("menuList", menuList);
-		mv.addObject("vo", pdsVo);
-		mv.addObject("fileList", fileList);
-		mv.addObject("map", map);
+		ModelAndView  mv = new ModelAndView();
+		mv.addObject("menuList",  menuList );
+		mv.addObject("vo",        pdsVo    );		
+		mv.addObject("fileList",  fileList );		
+		mv.addObject("map",       map );		
 		mv.setViewName("pds/update");
-		return mv;
+		return mv;		
 	}
+	
+	// /Pds/Update
+	@RequestMapping("/Update")
+	public  ModelAndView   update(
+			@RequestParam  HashMap<String, Object> map,
+			@RequestParam(value="upfile", required = false)
+			               MultipartFile[]         uploadFiles ) {
+		
+		System.out.println("update controller uploadFiles:" + uploadFiles);
+		
+		pdsService.setUpdate( map, uploadFiles );
+		
+		ModelAndView  mv   = new ModelAndView();
+		String        loc  = "redirect:/Pds/List?menu_id=" + map.get("menu_id")
+		                   + "&nowpage="                   + map.get("nowpage");
+		mv.setViewName(loc);
+		return mv;
+		
+	} 
 	
 	
 	

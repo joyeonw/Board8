@@ -69,7 +69,7 @@ public class PdsServiceImpl implements PdsService {
 		// map 이 중요한 역할
 		System.out.println( "2:" + map ); 
 		// map 2:{menu_id=MENU01, nowpage=1, title=aa, writer=aa, 
-		// content=aaa, uploadPath=D:/dev/data/, fileList=}
+		// content=aaa, uploadPath=D:/dev/data/, fileList=추가된 파일정보}
 		
 		// db 저장---------------------
 		// 3. Board 에 글 저장
@@ -109,6 +109,27 @@ public class PdsServiceImpl implements PdsService {
 		//  Board Table 정보삭제
 		pdsMapper.setDelete( map );
 		
+	}
+
+	@Override
+	public void setUpdate(
+			HashMap<String, Object> map, 
+			MultipartFile[] uploadFiles) {
+		
+		// 업로드된 파일을 물리저장소 저장
+		map.put("uploadPath", uploadPath );
+		System.out.println("map 1:" + map);
+		PdsFile.save(map, uploadFiles); 
+		   // 파일저장되고 fileList 에 저장된 정보 map 에 담겨져서 리턴
+		System.out.println("map 2:" + map);
+		
+		// Files 정보를 추가 ( fileList )
+		List<FilesVo>  fileList = (List<FilesVo>) map.get("fileList");
+		if( fileList.size() != 0 )
+			pdsMapper.setFileWrite( map );
+		
+		// Board 정보를 수정
+		pdsMapper.setUpdate( map );
 	}
 
 }

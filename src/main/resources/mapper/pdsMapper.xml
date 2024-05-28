@@ -120,12 +120,21 @@
   
   </select>
  
-  <!-- Files table 삭제 : bno --> 
+  <!-- Files table 삭제 : bno 로 여러개 --> 
   <delete  id="deleteUploadFile">
   
     DELETE  
      FROM   FILES
      WHERE  BNO = #{ bno } 
+  
+  </delete>
+  
+  <!-- Files table 삭제 : file_num 로 한 개 --> 
+  <delete  id="deleteUploadFileNum">
+  
+    DELETE  
+     FROM   FILES
+     WHERE  FILE_NUM = #{ file_num } 
   
   </delete>
   
@@ -137,6 +146,16 @@
       WHERE  BNO = #{ bno }
   
   </delete>
+  
+  <!-- Board 정보 수정 -->
+  <update  id="setUpdate">
+  
+     UPDATE  BOARD
+      SET    TITLE    =  #{ title    } 
+            ,CONTENT  =  #{ content  }  
+      WHERE  BNO = #{ bno }
+  
+  </update>
   
 </mapper>
 
