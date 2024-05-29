@@ -34,6 +34,10 @@ public class PdsFile {
 	    
 	    for(MultipartFile uploadFile : uploadFiles ) {
 	    	
+	    	
+	    	if ( uploadFile.isEmpty())
+	    		continue;
+	    	
 	    	String  originalName =  uploadFile.getOriginalFilename();
 	    	//System.out.println( "originalName:" + originalName );
 	    	// c:\donwload\data\data.abc.txt
@@ -73,7 +77,8 @@ public class PdsFile {
 	    	
 	    	// 저장된 파일들의 정보를 map 에 List 로 저장 -> pdsServiceImpl 에 사용
 	    	FilesVo  vo = new FilesVo(0, 0, fileName, fileExt, saveName2);
-	    	fileList.add( vo );	    	
+	    
+	    		fileList.add(vo);
 	    	
 	    }  // end for
 	    
